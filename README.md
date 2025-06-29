@@ -39,12 +39,11 @@ trendwise-scribe-portal-main/
 
 ## 🔧 Available Scripts
 
-- `npm run dev` - Start both frontend and backend in development mode
+- `npm run dev` - Start both frontend and backend servers
 - `npm run dev:backend` - Start only the backend server
 - `npm run dev:frontend` - Start only the frontend server
 - `npm run install:all` - Install dependencies for all projects
 - `npm run build` - Build the frontend for production
-- `npm run start` - Start the frontend in production mode
 
 ## 🌐 Access Points
 
@@ -56,48 +55,35 @@ trendwise-scribe-portal-main/
   - `GET /api/comment/:slug` - Get comments for article
   - `POST /api/comment` - Add new comment
 
+## 🔐 Authentication
+
+The project includes Google OAuth authentication using NextAuth.js. Make sure to configure your Google OAuth credentials in the frontend `.env.local` file.
+
 ## 🛠️ Technologies Used
 
 - **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
 - **Backend**: Express.js, Node.js
-- **Authentication**: NextAuth.js with Google OAuth
-- **Styling**: Tailwind CSS with Radix UI components
+- **Authentication**: NextAuth.js
+- **Styling**: Tailwind CSS with custom components
 
 ## 📝 Features
 
 - ✅ Article listing and detail pages
-- ✅ Comment system
 - ✅ Google OAuth authentication
+- ✅ Comment system
 - ✅ Responsive design
-- ✅ In-memory data storage (no database required)
-
-## 🔒 Environment Variables
-
-The project uses environment files for configuration:
-- `backend/.env` - Backend configuration
-- `trendwise/.env.local` - Frontend configuration
+- ✅ In-memory data storage (backend)
+- ✅ TypeScript support
+- ✅ Modern UI components
 
 ## 🚨 Troubleshooting
 
-If you encounter issues:
+If you encounter any issues:
 
 1. **Port conflicts**: Kill processes using ports 3000 and 5001
-   ```bash
-   lsof -ti:3000 | xargs kill -9
-   lsof -ti:5001 | xargs kill -9
-   ```
-
-2. **Missing dependencies**: Reinstall all dependencies
-   ```bash
-   npm run install:all
-   ```
-
-3. **Build cache issues**: Clear Next.js cache
-   ```bash
-   cd trendwise
-   rm -rf .next
-   npm run dev
-   ```
+2. **Dependencies**: Run `npm run install:all` to reinstall all dependencies
+3. **Build issues**: Clear `.next` folder and restart servers
+4. **Authentication**: Check Google OAuth credentials in `.env.local`
 
 ## 📄 License
 
