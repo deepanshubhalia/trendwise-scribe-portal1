@@ -1,73 +1,104 @@
-# Welcome to your Lovable project
+# Trendwise Scribe Portal
 
-## Project info
+A full-stack blog platform built with Next.js frontend and Express backend.
 
-**URL**: https://lovable.dev/projects/f8dc2bfd-8d48-4099-9b1c-00505c03792e
+## 🚀 Quick Start
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/f8dc2bfd-8d48-4099-9b1c-00505c03792e) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Option 1: Run both servers simultaneously (Recommended)
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Option 2: Run servers separately
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Backend (Port 5001):**
+```bash
+cd backend
+npm run dev
+```
 
-**Use GitHub Codespaces**
+**Frontend (Port 3000):**
+```bash
+cd trendwise
+npm run dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📁 Project Structure
 
-## What technologies are used for this project?
+```
+trendwise-scribe-portal-main/
+├── backend/          # Express.js API server
+│   ├── index.js      # Main server file
+│   └── package.json  # Backend dependencies
+├── trendwise/        # Next.js frontend
+│   ├── app/          # Next.js app directory
+│   ├── components/   # React components
+│   └── package.json  # Frontend dependencies
+└── package.json      # Root package.json for managing both projects
+```
 
-This project is built with:
+## 🔧 Available Scripts
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `npm run dev` - Start both frontend and backend in development mode
+- `npm run dev:backend` - Start only the backend server
+- `npm run dev:frontend` - Start only the frontend server
+- `npm run install:all` - Install dependencies for all projects
+- `npm run build` - Build the frontend for production
+- `npm run start` - Start the frontend in production mode
 
-## How can I deploy this project?
+## 🌐 Access Points
 
-Simply open [Lovable](https://lovable.dev/projects/f8dc2bfd-8d48-4099-9b1c-00505c03792e) and click on Share -> Publish.
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:5001
+- **API Endpoints**:
+  - `GET /api/article` - Get all articles
+  - `GET /api/article/:slug` - Get article by slug
+  - `GET /api/comment/:slug` - Get comments for article
+  - `POST /api/comment` - Add new comment
 
-## Can I connect a custom domain to my Lovable project?
+## 🛠️ Technologies Used
 
-Yes, you can!
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Backend**: Express.js, Node.js
+- **Authentication**: NextAuth.js with Google OAuth
+- **Styling**: Tailwind CSS with Radix UI components
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📝 Features
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- ✅ Article listing and detail pages
+- ✅ Comment system
+- ✅ Google OAuth authentication
+- ✅ Responsive design
+- ✅ In-memory data storage (no database required)
+
+## 🔒 Environment Variables
+
+The project uses environment files for configuration:
+- `backend/.env` - Backend configuration
+- `trendwise/.env.local` - Frontend configuration
+
+## 🚨 Troubleshooting
+
+If you encounter issues:
+
+1. **Port conflicts**: Kill processes using ports 3000 and 5001
+   ```bash
+   lsof -ti:3000 | xargs kill -9
+   lsof -ti:5001 | xargs kill -9
+   ```
+
+2. **Missing dependencies**: Reinstall all dependencies
+   ```bash
+   npm run install:all
+   ```
+
+3. **Build cache issues**: Clear Next.js cache
+   ```bash
+   cd trendwise
+   rm -rf .next
+   npm run dev
+   ```
+
+## 📄 License
+
+ISC

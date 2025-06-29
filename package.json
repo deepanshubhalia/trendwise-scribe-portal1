@@ -1,0 +1,19 @@
+{
+  "name": "trendwise-scribe-portal",
+  "version": "1.0.0",
+  "description": "Full-stack blog platform with Next.js frontend and Express backend",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd trendwise && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../trendwise && npm install",
+    "build": "cd trendwise && npm run build",
+    "start": "cd trendwise && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["nextjs", "express", "blog", "fullstack"],
+  "author": "",
+  "license": "ISC"
+} 
