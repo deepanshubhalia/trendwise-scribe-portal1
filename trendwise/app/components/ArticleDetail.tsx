@@ -12,7 +12,6 @@ interface ArticleDetailProps {
 
 export default function ArticleDetail({ article }: ArticleDetailProps) {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [mounted, setMounted] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
   const fetchComments = useCallback(async () => {
@@ -28,7 +27,6 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
   }, [article.slug, apiUrl]);
 
   useEffect(() => {
-    setMounted(true);
     fetchComments();
   }, [fetchComments]);
 
@@ -59,15 +57,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
       
       {/* Render content safely */}
       <div className="prose max-w-none">
-        {mounted ? (
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
-        ) : (
-          <div className="space-y-4">
-            {article.content.split('\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
-        )}
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </div>
       
       <hr className="my-12" />
