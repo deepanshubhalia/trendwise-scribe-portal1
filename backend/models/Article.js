@@ -6,6 +6,10 @@ const articleSchema = new mongoose.Schema({
   excerpt: String,
   coverImage: String,
   content: String,
+  author: {
+    name: String,
+    avatar: String
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

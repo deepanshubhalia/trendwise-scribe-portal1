@@ -25,7 +25,8 @@ async function getArticle(slug: string): Promise<Article | null> {
 // ✅ Dynamic SEO metadata function
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const res = await fetch(`http://localhost:5001/api/article/${slug}`, {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+  const res = await fetch(`${apiUrl}/api/article/${slug}`, {
     cache: 'no-store',
   });
   const article = await res.json();

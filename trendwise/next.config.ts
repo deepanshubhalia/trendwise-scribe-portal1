@@ -11,9 +11,7 @@ const nextConfig: NextConfig = {
       "source.unsplash.com",
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['mongoose'],
-  },
+  serverExternalPackages: ['mongoose'],
 };
 
 export default nextConfig;

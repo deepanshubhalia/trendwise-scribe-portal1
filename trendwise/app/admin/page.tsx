@@ -26,10 +26,12 @@ export default function AdminPage() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [message, setMessage] = useState('');
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+
   // Fetch available templates
   const fetchTemplates = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/bot/templates');
+      const response = await fetch(`${apiUrl}/api/bot/templates`);
       const data = await response.json();
       if (data.success) {
         setTemplates(data.templates);
@@ -46,7 +48,7 @@ export default function AdminPage() {
     setGeneratedArticle(null);
 
     try {
-      const response = await fetch('http://localhost:5001/api/bot/generate', {
+      const response = await fetch(`${apiUrl}/api/bot/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

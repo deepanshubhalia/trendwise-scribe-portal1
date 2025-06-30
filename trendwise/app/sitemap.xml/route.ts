@@ -1,7 +1,8 @@
 import { Article } from '@/types/article';
 
 export async function GET() {
-  const res = await fetch("http://localhost:5001/api/article", {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+  const res = await fetch(`${apiUrl}/api/article`, {
     cache: 'no-store',
   });
   const articles: Article[] = await res.json();
