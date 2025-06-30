@@ -289,9 +289,26 @@ router.post("/generate", async (req, res) => {
             isAI: true // Flag to identify AI-generated articles
         };
 
-        // Add to articles array using the function from app.locals
-        const addArticle = req.app.locals.addArticle;
-        const storedArticle = addArticle(generatedArticle);
+        // Store the article using the appropriate method
+        let storedArticle;
+        if (req.app.locals.addArticle) {
+            // Use in-memory storage if available
+            storedArticle = req.app.locals.addArticle(generatedArticle);
+        } else {
+            // Use MongoDB if available, otherwise just return the article
+            try {
+                const Article = (await import('../models/Article.js')).default;
+                if (req.app.locals.mongoose && req.app.locals.mongoose.connection.readyState === 1) {
+                    const article = new Article(generatedArticle);
+                    storedArticle = await article.save();
+                } else {
+                    storedArticle = generatedArticle;
+                }
+            } catch (error) {
+                console.error('Error saving article:', error);
+                storedArticle = generatedArticle;
+            }
+        }
         
         res.json({
             success: true,

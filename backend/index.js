@@ -31,6 +31,9 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Add mongoose to app.locals for bot routes
+app.locals.mongoose = mongoose;
+
 // In-memory storage as fallback
 let articles = [
   {
