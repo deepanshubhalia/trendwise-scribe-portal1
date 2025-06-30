@@ -1,7 +1,7 @@
 import { Article } from '@/types/article';
 import { NextRequest } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   const res = await fetch("http://localhost:5001/api/article", {
     cache: 'no-store',
   });
