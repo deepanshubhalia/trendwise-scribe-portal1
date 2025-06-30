@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Article } from '../types/article';
 import Header from "@/app/components/Header";
@@ -9,16 +9,15 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Search } from "lucide-react";
 
-export default function Home() {
+const categories = ["All", "Technology", "Development", "AI", "Web Design", "Programming"];
+
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const categories = ["All", "Technology", "React", "Backend", "CSS", "Programming", "Design"];
 
   // Format date consistently
   const formatDate = (dateString: string) => {
@@ -230,5 +229,13 @@ export default function Home() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }

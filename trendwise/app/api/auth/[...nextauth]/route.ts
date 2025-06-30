@@ -9,7 +9,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, _token, _user }) {
+    async session({ session }) {
       return session;
     },
   },
