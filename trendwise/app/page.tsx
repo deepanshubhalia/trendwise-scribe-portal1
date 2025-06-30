@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Article } from '../types/article';
 import Header from "@/app/components/Header";
 import ArticleCard from "@/app/components/ArticleCard";
@@ -15,6 +16,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const categories = ["All", "Technology", "React", "Backend", "CSS", "Programming", "Design"];
 
@@ -31,12 +35,53 @@ export default function Home() {
     }
   };
 
+  // Handle search form submission
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams(searchParams);
+    if (searchTerm.trim()) {
+      params.set('search', searchTerm.trim());
+    } else {
+      params.delete('search');
+    }
+    router.push(`/?${params.toString()}`);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle clear search
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    const params = new URLSearchParams(searchParams);
+    params.delete('search');
+    router.push(`/?${params.toString()}`);
+  };
+
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
-    fetch(`${apiUrl}/api/article`)
-      .then((res) => {
+    const searchQuery = searchParams.get('search');
+    
+    // Update local search term from URL
+    if (searchQuery) {
+      setSearchTerm(searchQuery);
+    }
+
+    // Build API URL with search parameter
+    const url = searchQuery 
+      ? `${apiUrl}/api/article?search=${encodeURIComponent(searchQuery)}`
+      : `${apiUrl}/api/article`;
+
+    setLoading(true);
+    fetch(url)
+      .then(async (res) => {
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          const errText = await res.text();
+          console.error('Error fetching articles:', res.status, errText);
+          setLoading(false);
+          return [];
         }
         return res.json();
       })
@@ -48,13 +93,11 @@ export default function Home() {
         console.error('Error fetching articles:', err);
         setLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
   const filteredArticles = articles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "All" || article.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesCategory;
   });
 
   return (
@@ -75,17 +118,40 @@ export default function Home() {
             </p>
           </div>
           
-          {/* Mobile Search */}
-          <div className="md:hidden mb-8 animate-scale-in">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 search-bar"
-              />
-            </div>
+          {/* Search Form */}
+          <div className="mb-8 animate-scale-in">
+            <form onSubmit={handleSearch} className="max-w-md mx-auto">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search articles..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="pl-10 pr-20 search-bar"
+                  autoFocus
+                />
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
+                  {searchTerm && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleClearSearch}
+                      className="h-6 px-2 text-xs"
+                    >
+                      Clear
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    size="sm"
+                    className="h-6 px-2 text-xs"
+                  >
+                    Search
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
         </section>
 
@@ -115,22 +181,17 @@ export default function Home() {
           ) : (
             <div className="grid gap-8 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {filteredArticles.map((article) => (
-                <Link key={article._id} href={`/article/${article.slug}`}>
-                  <div className="animate-fade-in">
-                    <div className="border rounded-lg p-4 shadow hover:shadow-md transition cursor-pointer">
-                      <img
-                        src={article.coverImage}
-                        alt={article.title}
-                        className="rounded mb-4 h-48 w-full object-cover"
-                      />
-                      <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-                      <p className="text-gray-600 mb-2">{article.excerpt}</p>
-                      <span className="text-sm text-gray-400">
-                        {formatDate(article.createdAt)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <ArticleCard
+                  key={article._id}
+                  id={article.slug || article._id}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  thumbnail={article.coverImage || '/default-cover.jpg'}
+                  category={article.category}
+                  readTime={article.readTime}
+                  publishedAt={formatDate(article.createdAt)}
+                  author={article.author}
+                />
               ))}
             </div>
           )}
@@ -138,13 +199,17 @@ export default function Home() {
           {!loading && filteredArticles.length === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">
-                No articles found matching your criteria.
+                {searchParams.get('search') 
+                  ? `No articles found matching "${searchParams.get('search')}".`
+                  : "No articles found matching your criteria."
+                }
               </p>
               <Button
                 variant="outline"
                 onClick={() => {
                   setSearchTerm("");
                   setSelectedCategory("All");
+                  router.push('/');
                 }}
                 className="mt-4"
               >

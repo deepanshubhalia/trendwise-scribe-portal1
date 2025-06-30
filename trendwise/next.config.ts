@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
       "lh4.googleusercontent.com",
       "lh5.googleusercontent.com",
       "lh6.googleusercontent.com",
+      "images.unsplash.com",
+      "source.unsplash.com",
     ],
   },
   experimental: {
