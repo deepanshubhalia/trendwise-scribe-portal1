@@ -119,6 +119,11 @@ app.post('/api/comment', (req, res) => {
 
 app.use('/api/bot', botRoutes);
 
+// Root test route for health check
+app.get('/', (req, res) => {
+    res.send('Backend is running successfully!');
+});
+
 app.listen(port, () => {
     console.log(`Backend API server running on http://localhost:${port}`);
 });
