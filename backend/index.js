@@ -34,6 +34,12 @@ app.use(express.json());
 // Add mongoose to app.locals for bot routes
 app.locals.mongoose = mongoose;
 
+// Add in-memory storage function for bot routes
+app.locals.addArticle = (article) => {
+  articles.push(article);
+  return article;
+};
+
 // In-memory storage as fallback
 let articles = [
   {

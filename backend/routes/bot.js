@@ -162,7 +162,7 @@ const fallbackContent = {
         </ul>
         <p>PWAs are the future of web apps—start building them today!</p>
         `,
-        coverImage: "https://source.unsplash.com/800x450/?pwa,web,app"
+        coverImage: "/default-cover.jpg"
     },
     "API Design Patterns and Best Practices": {
         content: `
@@ -177,7 +177,7 @@ const fallbackContent = {
         </ul>
         <p>Well-designed APIs are the backbone of modern web and mobile apps.</p>
         `,
-        coverImage: "https://source.unsplash.com/800x450/?api,design"
+        coverImage: "/default-cover.jpg"
     }
 };
 
@@ -273,7 +273,7 @@ router.post("/generate", async (req, res) => {
                     </ul>
                     <p>By understanding these concepts, you'll be better equipped to tackle complex development challenges and build more robust applications.</p>
                 `;
-                var fallbackCoverImage = `https://source.unsplash.com/800x450/?${randomTopic.split(" ").join(",")}`;
+                var fallbackCoverImage = "/default-cover.jpg";
             }
         }
         
@@ -284,8 +284,12 @@ router.post("/generate", async (req, res) => {
             slug: slug,
             excerpt: `An in-depth exploration of ${randomTopic.toLowerCase()}.`,
             content: generatedContent,
-            coverImage: fallbackCoverImage || `https://source.unsplash.com/800x450/?${randomTopic.split(" ").join(",")}`,
+            coverImage: fallbackCoverImage || "/default-cover.jpg", // Use fallback or default image
             createdAt: new Date().toISOString(),
+            author: {
+                name: "AI Assistant",
+                avatar: "/default-avatar.svg"
+            },
             isAI: true // Flag to identify AI-generated articles
         };
 
