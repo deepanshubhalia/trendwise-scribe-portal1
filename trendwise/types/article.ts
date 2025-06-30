@@ -6,4 +6,10 @@ export interface Article {
   coverImage: string;
   createdAt: string;
   content: string;
+  category?: string;
+  readTime?: string;
+  author?: {
+    name: string;
+    avatar: string;
+  };
 } 

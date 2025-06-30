@@ -1,4 +1,5 @@
-import { notFound, Metadata } from 'next/navigation';
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { Article } from '@/types/article';
 import ArticleDetail from '@/app/components/ArticleDetail';
 

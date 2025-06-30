@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Article } from '../types/article';
 import Header from "@/app/components/Header";
 import ArticleCard from "@/app/components/ArticleCard";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
-import { Badge } from "@/app/components/ui/badge";
 import { Search } from "lucide-react";
 
 export default function Home() {
@@ -186,11 +184,11 @@ export default function Home() {
                   id={article.slug || article._id}
                   title={article.title}
                   excerpt={article.excerpt}
-                  thumbnail={article.coverImage || '/default-cover.jpg'}
-                  category={article.category}
-                  readTime={article.readTime}
+                  coverImage={article.coverImage || '/default-cover.jpg'}
+                  category={article.category || 'General'}
+                  readTime={article.readTime || '5 min'}
                   publishedAt={formatDate(article.createdAt)}
-                  author={article.author}
+                  author={article.author || { name: 'Unknown', avatar: '/default-avatar.svg' }}
                 />
               ))}
             </div>
